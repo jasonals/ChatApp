@@ -9,17 +9,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'mMoney Merchant',
+      title: 'ChatApp',
       theme: ThemeData(
         primaryColor: Colors.orange[800],
       ),
       routes: {
         '/': (BuildContext context) => HomeScreen(),
-        // '/main': (BuildContext context) => CommonScreen(),
-        // '/currency': (BuildContext context) => CurrencyDetail(),
-        // '/merchants': (BuildContext context) => Billers(),
-        // '/services': (BuildContext context) => Services(),
-        // '/settings': (BuildContext context) => Settings(),
       },
     );
   }
