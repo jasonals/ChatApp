@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CommonAppBar extends AppBar {
-  final Widget title;
-  final Widget action;
+  final Widget? action;
 
-  CommonAppBar({this.title, this.action})
+  CommonAppBar({Key? key, this.action})
       : super(
+            key: key,
             centerTitle: true,
             elevation: 0,
             actions: action != null ? [action] : null);

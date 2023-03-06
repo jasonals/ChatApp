@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
-  final labelText;
-  final obscureText;
+  final String? labelText;
+  final bool obscureText;
 
-  const TextInput({Key key, this.labelText, this.obscureText = false})
+  const TextInput({Key? key, this.labelText, this.obscureText = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       style: TextStyle(color: Colors.white),
-      obscureText: this.obscureText,
+      obscureText: obscureText,
       decoration: InputDecoration(
-          labelText: this.labelText,
+          labelText: labelText,
           filled: true,
           fillColor: Colors.blue[400],
           border: OutlineInputBorder(

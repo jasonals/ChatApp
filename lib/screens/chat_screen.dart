@@ -2,21 +2,21 @@ import 'dart:async';
 
 import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chat_app/data/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:flutter_random_user/flutter_random_user.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:random_user/random_user.dart';
-import 'package:whotsapp/data/providers.dart';
 
-class ChatScreen extends HookWidget {
-  const ChatScreen({Key key, this.user}) : super(key: key);
+class ChatScreen extends HookConsumerWidget {
+  const ChatScreen({Key? key, required this.user}) : super(key: key);
 
-  final User user;
+  final RandomUser user;
 
   @override
-  Widget build(BuildContext context) {
-    final messages = useProvider(messagesProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final messages = ref.watch(chatMessagesProvider(user.userName));
     final textController = useTextEditingController();
     final focusNode = useFocusNode();
     final scrollController = useScrollController();
@@ -27,7 +27,7 @@ class ChatScreen extends HookWidget {
       });
 
       return null;
-    }, [messages.chat.length, MediaQuery.of(context).viewInsets.bottom]);
+    }, [messages.length, MediaQuery.of(context).viewInsets.bottom]);
 
     BubbleStyle styleSomebody = BubbleStyle(
       nip: BubbleNip.leftTop,
@@ -43,7 +43,7 @@ class ChatScreen extends HookWidget {
       alignment: Alignment.topRight,
     );
 
-    final dateFormat = new DateFormat("h:mm a");
+    final dateFormat = DateFormat("h:mm a");
 
     // scrollController.position.maxScrollExtent
 
@@ -56,11 +56,11 @@ class ChatScreen extends HookWidget {
             CircleAvatar(
               maxRadius: 18,
               backgroundImage: CachedNetworkImageProvider(
-                user.picture.thumbnail,
+                user.thumbNail,
               ),
             ),
             SizedBox(width: 8),
-            Text("${user.name.first} ${user.name.last}"),
+            Text("${user.firstName} ${user.lastName}"),
           ],
         ),
       ),
@@ -69,12 +69,14 @@ class ChatScreen extends HookWidget {
         children: [
           Expanded(
             child: ListView(
+              //primary: true,
               controller: scrollController,
               padding: EdgeInsets.all(8.0),
-              children: messages.chat
+              children: messages
                   .map(
                     (chat) => Bubble(
-                      style: chat.userId == "me" ? styleMe : styleSomebody,
+                      style: chat.userName == "me" ? styleMe : styleSomebody,
+                      margin: BubbleEdges.only(top: 10),
                       child: Wrap(
                         alignment: WrapAlignment.end,
                         crossAxisAlignment: WrapCrossAlignment.end,
@@ -90,7 +92,6 @@ class ChatScreen extends HookWidget {
                           ),
                         ],
                       ),
-                      margin: BubbleEdges.only(top: 10),
                     ),
                   )
                   .toList(),
@@ -115,10 +116,10 @@ class ChatScreen extends HookWidget {
                     ),
                     focusNode: focusNode,
                     onSubmitted: (txt) {
-                      messages.newMessage(
-                        message: txt,
-                        userId: user.id.value,
-                      );
+                      ref.read(messagesProvider.notifier).newMessage(
+                            message: txt,
+                            userName: user.userName,
+                          );
 
                       textController.clear();
                       focusNode.requestFocus();
@@ -127,10 +128,10 @@ class ChatScreen extends HookWidget {
                   )),
                   IconButton(
                     onPressed: () {
-                      messages.newMessage(
-                        message: textController.text,
-                        userId: user.id.value,
-                      );
+                      ref.read(messagesProvider.notifier).newMessage(
+                            message: textController.text,
+                            userName: user.userName,
+                          );
 
                       textController.clear();
                     },

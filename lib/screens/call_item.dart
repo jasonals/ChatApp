@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CallCard extends StatelessWidget {
-  const CallCard({Key key, @required this.name}) : super(key: key);
+  const CallCard({Key? key, required this.name}) : super(key: key);
 
   final String name;
 
@@ -11,7 +11,7 @@ class CallCard extends StatelessWidget {
       title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: const <Widget>[
           Text(
             "August 28, 1:34 PM",
             style: TextStyle(color: Colors.grey),

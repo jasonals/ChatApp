@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:random_user/random_user.dart';
+import 'package:flutter_random_user/flutter_random_user.dart';
 
 class ChatCard extends StatelessWidget {
-  const ChatCard({Key key, @required this.user}) : super(key: key);
+  const ChatCard({Key? key, required this.user}) : super(key: key);
 
-  final User user;
+  final RandomUser user;
 
   @override
   Widget build(BuildContext context) {
@@ -13,14 +13,14 @@ class ChatCard extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text("${user.name.first} ${user.name.last}",
+          Text("${user.firstName} ${user.lastName}",
               style: TextStyle(fontWeight: FontWeight.bold)),
           Text("5:50 PM", style: TextStyle(fontWeight: FontWeight.normal)),
         ],
       ),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: const <Widget>[
           Expanded(
             child: Text(
               "Chat message goes here and it might be too long to be shown all at once but I dont know what happens if it is so long.",
@@ -32,7 +32,7 @@ class ChatCard extends StatelessWidget {
       ),
       leading: CircleAvatar(
         backgroundImage: CachedNetworkImageProvider(
-          user.picture.thumbnail,
+          user.thumbNail,
         ),
         radius: 25,
       ),

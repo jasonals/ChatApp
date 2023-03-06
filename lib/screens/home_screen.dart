@@ -1,17 +1,18 @@
+import 'package:chat_app/data/providers.dart';
+import 'package:chat_app/screens/call_item.dart';
+import 'package:chat_app/screens/chat_item.dart';
+import 'package:chat_app/screens/chat_screen.dart';
+import 'package:chat_app/screens/status_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
-import 'package:whotsapp/data/providers.dart';
-import 'package:whotsapp/screens/call_item.dart';
-import 'package:whotsapp/screens/chat_item.dart';
-import 'package:whotsapp/screens/chat_screen.dart';
-import 'package:whotsapp/screens/status_item.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomeScreen extends HookWidget {
+class HomeScreen extends HookConsumerWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final chatCount = useProvider(chatCountProvider);
-    final chats = useProvider(chatsProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chatCount = ref.watch(chatCountProvider);
+    final chats = ref.watch(chatsProvider);
 
     return DefaultTabController(
       // initialIndex: 1,
@@ -19,7 +20,7 @@ class HomeScreen extends HookWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('ChatApp'),
-          actions: <Widget>[
+          actions: const <Widget>[
             Icon(Icons.search),
             SizedBox(width: 8),
             Icon(Icons.more_vert),
@@ -44,11 +45,11 @@ class HomeScreen extends HookWidget {
                         CircleAvatar(
                           backgroundColor: Colors.white,
                           foregroundColor: Theme.of(context).primaryColor,
+                          radius: 14,
                           child: Text(
                             "$chatCount",
                             style: TextStyle(fontSize: 12),
                           ),
-                          radius: 14,
                         ),
                     ],
                   ),

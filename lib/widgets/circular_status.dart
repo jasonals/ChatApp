@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class CircularStatus extends CustomPainter {
-  CircularStatus({this.color, this.count = 9});
+  CircularStatus({required this.color, this.count = 9});
 
   Color color = Colors.black;
   int count;
